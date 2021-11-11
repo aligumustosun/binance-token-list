@@ -33,7 +33,7 @@
         return response.json();
       }
 
-      postData('https://tr.tradingview.com/api/v1/symbols_list/colored/red/append/', ['${list.join(
+      postData('https://tradingview.com/api/v1/symbols_list/colored/red/append/', ['${list.join(
           "','"
         )}'])
         .then(data => {
