@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <script type="module">
+            const getSymbols = () => {
+        return new Promise((res, rej) => {
+          fetch("https://www.binance.com/bapi/margin/v1/public/isolated-margin/pair/all")
+            .then((response) => response.json())
+            .then((resp) => {
+              const data = resp.data
+                .filter(({ quote }) => quote === "USDT")
+                .map(({ symbol }) => symbol);
+              res(data);
+            });
+        });
+      };
+
+      const getScriptText = (list) => {
+        return `
+      async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer',
+          body: JSON.stringify(data)
+        });
+        return response.json();
+      }
+
+      postData('https://tr.tradingview.com/api/v1/symbols_list/colored/red/append/', ['${list.join(
+          "','"
+        )}'])
+        .then(data => {
+          console.log(data);
+        }); // HI from AGT - created time: ${new Date()}
+      `;
+      };
+
+      getSymbols().then((symbols) => {
+        const scriptText = getScriptText(symbols);
+        document.getElementById("binance-script").innerText = scriptText;
+      });
+    </script>
+  </head>
+  <div id="binance-script"></div>
+</html>
