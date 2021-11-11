@@ -27,13 +27,13 @@
             'Content-Type': 'application/json'
           },
           redirect: 'follow',
-          referrerPolicy: 'no-referrer',
+          referrerPolicy: 'origin-when-cross-origin',
           body: JSON.stringify(data)
         });
         return response.json();
       }
 
-      postData('https://tradingview.com/api/v1/symbols_list/colored/red/append/', ['${list.join(
+      postData('https://www.tradingview.com/api/v1/symbols_list/colored/red/append/', ['${list.join(
           "','"
         )}'])
         .then(data => {
